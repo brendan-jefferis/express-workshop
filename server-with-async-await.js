@@ -65,8 +65,8 @@ app.get('/posts', async (req, res) => {
   ES2015.
 
   NOTE: To be clear, this example is not intended to be the solution that someone
-  doing this tutorial was expected to write, it's an example of how I would
-  write it in a production code base, for your reference.
+  doing this tutorial was expected to write, it's similar to how I would write it
+  in a production code base, for your reference.
   That's not to say that it's perfect, and other devs would write it
   differently, but there it is.
  */
