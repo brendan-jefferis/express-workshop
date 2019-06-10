@@ -55,7 +55,52 @@ app.get('/posts', (req, res) => {
     .catch(err => console.error(`There was a problem getting posts ${err}`))
 })
 
+/*
+   You can see the value of the `then` method here, in that it allows us to
+   chain subsequent function calls, where each `then` receives the returned
+   value on the previous.
+   
+   This style of code (as opposed to async/await) is a little older, but still
+   has its place as a means of running things asynchronously (i.e., non-blocking)
+   for example, if we had another long-running function that we didn't want to
+   make the client wait for, we could do something like:
 
+   ```
+   doFirstThing()
+      .then(handeTheResult)
+      .catch(err => console.error(`The first thing failed ${err}`))
+      
+   loadPosts()
+     .then(posts => {
+       posts[Date.now()] = content
+       return JSON.stringify(posts)
+     })
+     .then(savePosts)
+     .then(() => res.sendStatus(200))
+     .catch(err => console.error(`There was a problem saving posts: ${err}`))
+   
+   doOtherThing()
+     .then(handleTheResult)
+     .catch(err => console.log(`This other thing has failed ${err`))
+
+   ```
+   
+   The order of execution would be:
+   1. doFirstThing()
+   2. loadPosts()
+   3. doOtherThing()
+   4. (enter first `then` of either doFirstThing, loadPosts or doOtherThing,
+      whichever returned first.)
+   
+   Since only loadPosts uses `res.sendStatus`, that's the only one the client
+   must wait for.
+   
+   If we re-wrote the above with async/await we'd await (block) at each step,
+   so in summary, and as a general guide:
+
+   Use async/await for easier to read, synchronous-looking code
+   Use then/catch for concurrent, non-blocking (asynchronous) operations
+*/
 app.post('/posts', (req, res) => {
   if (!req.fields.blogspot) return res.status(400).send('Missing required field: blogspot')
   const content = req.fields.blogspot
