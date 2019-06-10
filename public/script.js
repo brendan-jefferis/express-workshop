@@ -5,7 +5,7 @@ if (document.readyState !== 'loading') {
 }
 
 function ready () {
-    getBlogposts('/get-posts');
+    getBlogposts('/posts');
 
     // send posts to server
     var form = document.querySelector('form');
